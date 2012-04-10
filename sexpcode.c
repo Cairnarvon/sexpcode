@@ -339,19 +339,19 @@ int parse_expression(char *func_expr, char *args, char **content, int curat)
                    ((fundef*)r->data)->expr != NULL &&
                    ((fundef*)r->data)->at < curat) {
             /* Definition substitition; recurse */
+            int j;
+
             curat = at;
 
-            for (i = 0; i < p->iters; ++i) {
-                int j = parse_expression(((fundef*)r->data)->expr,
-                                          args,
-                                          content,
-                                          ((fundef*)r->data)->at);
+            j = parse_expression(((fundef*)r->data)->expr,
+                                 args,
+                                 content,
+                                 ((fundef*)r->data)->at);
 
-                if (j < 0)
-                    return -1;
+            if (j < 0)
+                return -1;
 
-                fs += j;
-            }
+            fs += j;
 
         } else {
             /* Normal function */
