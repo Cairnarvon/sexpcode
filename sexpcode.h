@@ -7,13 +7,13 @@ typedef struct {
     void (*func)(char*, char**);
 } sexpcode_func;
 
-char *pass0(char*);
+char *pass0(const char*);
 char *pass1(char*);
 char *pass2(char*);
 
 char *sexpcode_unescape(char*);
 int do_sexpcode(char*);
 
-char *sexpcode(char*);
+char *sexpcode(const char*);
 
 #endif

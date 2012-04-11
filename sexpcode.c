@@ -36,7 +36,7 @@ extern sexpcode_func *(*get_func)(char*);
 #define P0_GETTING_END_TAG      4
 #define P0_VERBATIM             5
 
-char *pass0(char *content)
+char *pass0(const char *content)
 {
     /*
     Pass 0 deals with Bun's verbatim syntax and backslash escaping.
@@ -51,10 +51,11 @@ char *pass0(char *content)
             if (*content == '\\') {
                 ++content;
                 if (*content == '{')
-                    *content = 1;
+                    fputc(1, output);
                 else if (*content == '}')
-                    *content = 2;
-                fputc(*content, output);
+                    fputc(2, output);
+                else
+                    fputc(*content, output);
             } else if (*content == '{')
                 mode = P0_HAD_BRACE;
             else {
@@ -134,12 +135,14 @@ char *pass0(char *content)
 
     if (mode == P0_NORMAL) {
         int output_size = ftell(output);
-        content = malloc(output_size);
+        char *ret;
+
+        ret = malloc(output_size);
         rewind(output);
-        fread(content, 1, output_size, output);
+        fread(ret, 1, output_size, output);
         fclose(output);
 
-        return content;
+        return ret;
     } else {
         fprintf(stderr, "Didn't finish pass 0 in normal state.\n");
         fclose(output);
@@ -655,7 +658,7 @@ char *sexpcode_unescape(char *content)
 
 /* All together now */
 
-char *sexpcode(char *input)
+char *sexpcode(const char *input)
 {
     char *a, *b;
 
