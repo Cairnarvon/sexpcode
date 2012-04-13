@@ -219,6 +219,10 @@ int do_pass1(char *content)
         fputc(*content, output);
         if (!*content)  /* No SexpCode here */
             return 0;
+        else if (*content == '}') {
+            fprintf(stderr, "Unexpected }.\n");
+            return 1;
+        }
     }
 
     /* Extract the function expression */
