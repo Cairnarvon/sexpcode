@@ -44,7 +44,9 @@ pass1 = [(0, '{define b a}', ''),
          (0, '{b^3.i*2.{code a}.verbatim.url b c}',
              '{b {b {b {i {i {code a {url b {verbatim c}}}}}}}}'),
          (1, '{b^4 a}', ''),
-         (1, ' }', '')]
+         (1, ' }', ''),
+         (0, '{b*2 {i*2 test}}', '{b {b {i {i test}}}}'),
+         (0, '{define x b.i}{define y {url z}.x}{x x}{y y}', '{b {i x}}{url z {b {i y}}}')]
 pass2 = [(0, 'Test', 'Test'),
          (0, '{b simple}', '<b>simple</b>'),
          (0, 'a {b b} c', 'a <b>b</b> c'),
