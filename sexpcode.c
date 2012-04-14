@@ -350,13 +350,16 @@ int parse_expression(char *func_expr, char *args, char **content, int curat)
                    ((fundef*)r->data)->at < curat) {
             /* Definition substitition; recurse */
             int j;
+            char *expr = malloc(strlen(((fundef*)r->data)->expr) + 1);
 
+            strcpy(expr, ((fundef*)r->data)->expr);
             curat = at;
 
-            j = parse_expression(((fundef*)r->data)->expr,
+            j = parse_expression(expr,
                                  args,
                                  content,
                                  ((fundef*)r->data)->at);
+            free(expr);
 
             if (j < 0)
                 return -1;
