@@ -190,6 +190,7 @@ char *pass1(char *content)
     hcreate(MAX_DEFINES);
 
     ret = do_pass1(content);
+    fputc(0, output);
 
     hdestroy();
     for (i = 0; i < defs_ptr; ++i)
@@ -216,13 +217,13 @@ int do_pass1(char *content)
 
     /* Scan to the first { */
     for (; *content != '{'; ++content) {
-        fputc(*content, output);
         if (!*content)  /* No SexpCode here */
             return 0;
-        else if (*content == '}') {
+        if (*content == '}') {
             fprintf(stderr, "Unexpected }.\n");
             return 1;
         }
+        fputc(*content, output);
     }
 
     /* Extract the function expression */
@@ -304,7 +305,9 @@ int do_pass1(char *content)
         if (fs < 0)
             return 1;
 
-        fprintf(output, "%s", subject);
+        if (do_pass1(subject))
+            return 1;
+
         for (; fs > 0; --fs)
             fputc('}', output);
     }
