@@ -266,7 +266,7 @@ int do_pass1(char *content)
     if (strcmp("define", func_expr) == 0) {
         /* Function definition */
         ENTRY r, *e;
-        fundef *fd = malloc(sizeof(fundef));
+        fundef *fd;
 
         r.key = pop_arg(&subject);
 
@@ -276,6 +276,9 @@ int do_pass1(char *content)
             return 1;
         }
        
+        fd = malloc(sizeof(fundef));
+        defs[defs_ptr++] = fd;
+
         fd->expr = subject;
         fd->at = at++;
         r.data = fd;
@@ -287,8 +290,6 @@ int do_pass1(char *content)
             fprintf(stderr, "Definition table is full.\n");
             return 1;
         }
-
-        defs[defs_ptr++] = fd;
 
     } else if (strcmp("undefine", func_expr) == 0) {
         /* Function undefinition */
